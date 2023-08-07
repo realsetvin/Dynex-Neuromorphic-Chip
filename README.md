@@ -4,11 +4,13 @@ Reference implementations of the Dynex Neuromorphic Chip as described [on our we
 
 ## C++ Reference Implementation (CPU)
 
-File "dynex.cc" is a reference implementation of the neuromorphic circuit. It integrates the system of equations (ODE) derived from the circuit model on a CPU. The reference design solves the Boolean satisfiability problem (sometimes called propositional satisfiability problem and abbreviated SATISFIABILITY, SAT or B-SAT). A propositional logic formula, also called Boolean expression, is built from variables, operators AND (conjunction, also denoted by ∧), OR (disjunction, ∨), NOT (negation, ¬), and parentheses. A formula is said to be satisfiable if it can be made TRUE by assigning appropriate logical values (i.e. TRUE, FALSE) to its variables. The Boolean satisfiability problem (SAT) is, given a formula, to check whether it is satisfiable. This decision problem is of central importance in many areas of computer science, including theoretical computer science, complexity theory, algorithmics, cryptography and artificial intelligence. Please note that this reference implementation proves the mathematical model and is not as efficient as the implementation by commerical miners. 
+File "dynex.cc" is a reference implementation of the neuromorphic circuit. It integrates the system of equations (ODE) derived from the circuit model on a CPU. The reference design solves the Boolean satisfiability problem (sometimes called propositional satisfiability problem and abbreviated SATISFIABILITY, SAT or B-SAT). A propositional logic formula, also called Boolean expression, is built from variables, operators AND (conjunction, also denoted by ∧), OR (disjunction, ∨), NOT (negation, ¬), and parentheses. 
 
-To illustrate the performance of neuromorphic computing, the following example showcases an implementation of a constraint satisfaction problem, where a problem formulation with complexity O(n^100,000) is being solved using the Dynex Neuromorphic Chip. The problem consists of 100,000 unique variables. Existing methodologies based on current and Quantum technology (reducing the complexity with Shor’s algorithm to O(n^50,000) cannot solve this problem class efficiently today. The Dynex Neuromorphic Chip solves the problem in a few seconds because of its inherent parallelization, it’s long-range order and its capability to utilize instantons.
+A formula is said to be satisfiable if it can be made TRUE by assigning appropriate logical values (i.e. TRUE, FALSE) to its variables. The Boolean satisfiability problem (SAT) is, given a formula, to check whether it is satisfiable. This decision problem is of central importance in many areas of computer science, including theoretical computer science, complexity theory, algorithmics, cryptography, and artificial intelligence. Please note that this reference implementation proves the mathematical model and is not as efficient as the implementation by commercial miners. 
 
-This reference implementation proves the mathematical model and has not been optimised for speed and performance.
+To illustrate the performance of neuromorphic computing, the following example showcases an implementation of a constraint satisfaction problem, where a problem formulation with complexity O(n^100,000) is being solved using the Dynex Neuromorphic Chip. The problem consists of 100,000 unique variables. Existing methodologies based on current and Quantum technology (reducing the complexity with Shor’s algorithm to O(n^50,000) cannot solve this problem class efficiently today. The Dynex Neuromorphic Chip solves the problem in a few seconds because of its inherent parallelization, its long-range order, and its capability to utilize instantons.
+
+This reference implementation proves the mathematical model and has not been optimized for speed and performance.
 
 ### Requirements:
 Please note that it is required to have the [Boost library](https://www.boost.org) (Version 1.74.0 or better) installed: 
@@ -48,7 +50,7 @@ g++ dynex.cc -o dynex -std=c++17 -Ofast -I /opt/homebrew/cellar/boost/1.78.0/inc
 
 ### Benchmark Comparison 
 
-Comparison with Kissat_MAB-HyWalk, winner of the SAT Competition 2023 [http://www.satcompetition.org/], a single threaded solver.
+Comparison with Kissat_MAB-HyWalk, winner of the SAT Competition 2023 [http://www.satcompetition.org/], a single-threaded solver.
 
 ```
 PROBLEM INSTANCE                                                  Max.Walltime     Kissat_MAB-HyWalk         Dynex 1 Core
@@ -65,7 +67,7 @@ transformed_barthel_n_100000_r_8.000_p0_0.080_instance_020.cnf    15 minutes    
 transformed_barthel_n_100000_r_8.000_p0_0.080_instance_024.cnf    15 minutes       no solution           6.22s (62 steps*)
 ```
 
-Comparison with YalSat, winner of the SAT Competition 2017 Random Track [https://github.com/arminbiere/yalsat], a single threaded solver.
+Comparison with YalSat, winner of the SAT Competition 2017 Random Track [https://github.com/arminbiere/yalsat], a single-threaded solver.
 
 ```
 PROBLEM INSTANCE                                                  Max.Walltime     YalSat 1.0.1         Dynex 1 Core
@@ -82,7 +84,7 @@ transformed_barthel_n_100000_r_8.000_p0_0.080_instance_020.cnf    15 minutes    
 transformed_barthel_n_100000_r_8.000_p0_0.080_instance_024.cnf    15 minutes       no solution           6.22s (62 steps*)
 ```
 
-Comparison with PalSat [https://github.com/arminbiere/yalsat], a multii threaded solver, on 3 CPU cores (command line option -t 3) and Dynex on 3 CPU cores (command line option -w 3)
+Comparison with PalSat [https://github.com/arminbiere/yalsat], a multi-threaded solver, on 3 CPU cores (command line option -t 3) and Dynex on 3 CPU cores (command line option -w 3)
 
 ```
 PROBLEM INSTANCE                                                  Max.Walltime     PalSat 3 Cores      Dynex 3 Cores
@@ -101,18 +103,18 @@ transformed_barthel_n_100000_r_8.000_p0_0.080_instance_024.cnf    15 minutes    
 
 PalSat is a very efficient parallel implementation and has been designed to achieve high computational speed. It requires PalSat 16-28 million flips (=computing operations) for finding solutions. 
 
-*In comparison, the Dynex reference implementation, which has not been optimised for speed but to showcase the calculations in a clear and understandable way in the source code, requires only between 15 - 183 integration steps to find a solution. TTS for Dynex is greatly improved in the DNX mining software implementations.
+*In comparison, the Dynex reference implementation, which has not been optimized for speed but to showcase the calculations in a clear and understandable way in the source code, requires only between 15 - 183 integration steps to find a solution. TTS for Dynex is greatly improved in the DNX mining software implementations.
 
 ### Notes and Remarks
 
-- The Dynex Chip is not a physical produced chip, DynexSolve simulates them by integrating its equations of motion (ODE integration)
-Extrapolating the equations of motions from the chip design requires a number of variables / parameters to be introduced (as explained in the DynexSolve paper)
+- The Dynex Chip is not a physically produced chip, DynexSolve simulates them by integrating its equations of motion (ODE integration)
+Extrapolating the equations of motions from the chip design requires a number of variables/parameters to be introduced (as explained in the DynexSolve paper)
 
-- In the case of SAT problems, there are in total 6 parameters to be defined. These parameters depend on the underlying structure for a problem type. The reference implementation used in our example is applying tuned parameters for the problem type stemming from Barthel instances and may not be suitable / applicable out of the box for other problem types
+- In the case of SAT problems, there are in total 6 parameters to be defined. These parameters depend on the underlying structure of a problem type. The reference implementation used in our example is applying tuned parameters for the problem type stemming from Barthel instances and may not be suitable / applicable out of the box for other problem types
 
-- Identifying the optimal parameters is an iterative tuning process which happens on the Dynex platform where a large number of GPUs are tuning in until they have identified the best values
+- Identifying the optimal parameters is an iterative tuning process that happens on the Dynex platform where a large number of GPUs are tuning in until they have identified the best values
 
-- With parameters tuned, TTS is optimised and applicable for every similar problem types, meaning problems of similar type can be solved even more efficient on the platform.
+- With parameters tuned, TTS is optimized and applicable for every similar problem type, meaning problems of similar type can be solved even more efficiently on the platform.
 
 ## CUDA Reference Implementation (GPU)
 
